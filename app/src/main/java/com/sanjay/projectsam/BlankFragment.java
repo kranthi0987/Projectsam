@@ -4,6 +4,8 @@ package com.sanjay.projectsam;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.sanjay.projectsam.adapter.RecyclerAdapter;
 import com.sanjay.projectsam.model.Projectsammodel;
 import com.sanjay.projectsam.model.Row;
 import com.sanjay.projectsam.retrofit.ApiClient;
@@ -30,6 +33,7 @@ public class BlankFragment extends Fragment {
     public static ApiInterface apiInterface;
     RecyclerView listrecyclerview;
     List<Row> list;
+    private RecyclerAdapter mAdapter;
     Row productModel = null;
 
     public BlankFragment() {
@@ -40,14 +44,15 @@ public class BlankFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         logincall();
-        return inflater.inflate(R.layout.fragment_blank, container, false);
-//        View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
+//        return inflater.inflate(R.layout.fragment_blank, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
 //
-//        RecyclerView listrecyclerview = (RecyclerView) rootView.findViewById(R.id.listrecycle);
-//        listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        String[] list={"1","2","3","4","5","6","7","8","49","57"};
-//        listrecyclerview.setAdapter(new ListAdapter(model));
-//        return rootView;
+        RecyclerView listrecyclerview = rootView.findViewById(R.id.listrecycle);
+        listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        System.out.println("onCreateView: " + list);
+        listrecyclerview.setItemAnimator(new DefaultItemAnimator());
+//        listrecyclerview.setAdapter((RecyclerView.Adapter) list);
+        return rootView;
 
     }
 
@@ -93,16 +98,26 @@ public class BlankFragment extends Fragment {
 
                 System.out.println(Listdata.getRows());
                 list = Listdata.getRows();
+//                listrecyclerview.setAdapter(new RecyclerAdapter(list));
                 for (int i = 0; i < list.size(); i++) {
                     productModel = list.get(i);
-                    productModel.getTitle();
                     System.out.println(productModel.getImageHref());
                     System.out.println(productModel.getTitle());
                     System.out.println(productModel.getDescription());
-                    productModel.getDescription();
+                    String title = productModel.getTitle();
+                    String description = productModel.getDescription();
+                    Object image = productModel.getImageHref();
+                    productModel.setTitle(title);
+                    productModel.setDescription(description);
+                    productModel.setImageHref(image);
+                    list.add(productModel);
                 }
-
-
+                mAdapter = new RecyclerAdapter(list, getActivity());
+                listrecyclerview.setAdapter(mAdapter);
+//                listrecyclerview.setAdapter(new RecyclerAdapter(list));
+//                RecyclerView listrecyclerview = (RecyclerView) getActivity().findViewById(R.id.listrecycle);
+//                listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                listrecyclerview.setAdapter(new RecyclerAdapter(list));
 //                    productModel.setImageurl(products.get(i).getImageurl());
 //                    productModel.setColor(products.get(i).getColor());
 //                    productModel.setPrice(products.get(i).getPrice());
