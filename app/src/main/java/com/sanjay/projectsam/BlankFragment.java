@@ -87,8 +87,7 @@ public class BlankFragment extends Fragment {
 
             @Override
             public void onNext(Projectsammodel Listdata) {
-                Log.d("", "onNext:" + Listdata);
-                Toast.makeText(getContext(), "kkk" + Listdata, Toast.LENGTH_SHORT).show();
+
 
                 Projectsammodel ListModel = new Projectsammodel();
                 ListModel.setTitle(Listdata.getTitle());
@@ -112,8 +111,8 @@ public class BlankFragment extends Fragment {
                     productModel.setImageHref(image);
                     list.add(productModel);
                 }
-                mAdapter = new RecyclerAdapter(list, getActivity());
-                listrecyclerview.setAdapter(mAdapter);
+//                mAdapter = new RecyclerAdapter(list, getActivity());
+                listrecyclerview.setAdapter((RecyclerView.Adapter) list);
 //                listrecyclerview.setAdapter(new RecyclerAdapter(list));
 //                RecyclerView listrecyclerview = (RecyclerView) getActivity().findViewById(R.id.listrecycle);
 //                listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
