@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sanjay.projectsam.adapter.RecyclerAdapter;
 import com.sanjay.projectsam.model.Projectsammodel;
 import com.sanjay.projectsam.model.Row;
@@ -42,7 +44,7 @@ public class BlankFragment extends Fragment {
     SharedPreferences sharedpreferences;
     SwipeRefreshLayout swipeLayout;
     RecyclerAdapter recyclerAdapter;
-
+    ImageLoader imageLoader = ImageLoader.getInstance();
 
     public BlankFragment() {
         // Required empty public constructor
@@ -70,7 +72,7 @@ public class BlankFragment extends Fragment {
         list = new ArrayList<>();
         System.out.println("onCreateView: " + list);
         listrecyclerview.setItemAnimator(new DefaultItemAnimator());
-        recyclerAdapter = new RecyclerAdapter(getContext(), list);
+        recyclerAdapter = new RecyclerAdapter((Glide.with(this)), list);
         listrecyclerview.setAdapter(recyclerAdapter);
         return rootView;
 
