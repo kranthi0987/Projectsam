@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 
 public class MainActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
@@ -27,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
         String title = sharedpreferences.getString("title", "");
 //        String sender=this.getIntent().getExtras().getString("SENDER_KEY");
 //        receiveData();
-
+        //image loader intialization
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(MainActivity.this));
         //Fragments initialization
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

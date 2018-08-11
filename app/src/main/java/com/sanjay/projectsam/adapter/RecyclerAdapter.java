@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.sanjay.projectsam.R;
 import com.sanjay.projectsam.model.Row;
 
@@ -45,6 +46,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
     @Override
     public void onBindViewHolder(@NonNull MyviewHolder holder, int position) {
         Row product = listrow.get(position);
+        ImageSize targetSize = new ImageSize(400, 400);
         if (product.getTitle() != null) {
             holder.title.setText(product.getTitle());
         } else {
@@ -56,9 +58,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
             holder.description.setText("Null");
         }
         if (product.getImageHref() != null) {
-            imageLoader.displayImage(String.valueOf(product.getImageHref()), holder.icon);
+            imageLoader.displayImage(String.valueOf(product.getImageHref()), holder.icon, targetSize);
         } else {
-            imageLoader.displayImage(String.valueOf(R.drawable.ic_launcher_background), holder.icon);
+            imageLoader.displayImage(String.valueOf(R.drawable.ic_launcher_background), holder.icon, targetSize);
         }
 
 //        Glide.with(context).load(product.getImageHref()).apply(RequestOptions.centerCropTransform()).into(holder.icon);

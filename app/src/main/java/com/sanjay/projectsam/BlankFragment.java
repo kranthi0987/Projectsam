@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sanjay.projectsam.adapter.RecyclerAdapter;
 import com.sanjay.projectsam.model.Projectsammodel;
 import com.sanjay.projectsam.model.Row;
@@ -44,7 +43,6 @@ public class BlankFragment extends Fragment {
     SharedPreferences sharedpreferences;
     SwipeRefreshLayout swipeLayout;
     RecyclerAdapter recyclerAdapter;
-    ImageLoader imageLoader = ImageLoader.getInstance();
 
     public BlankFragment() {
         // Required empty public constructor
@@ -65,7 +63,7 @@ public class BlankFragment extends Fragment {
             @Override
             public void onRefresh() {
                 logincall(); // your code
-                swipeLayout.setRefreshing(true);
+                swipeLayout.setRefreshing(false);
             }
         });
         listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
