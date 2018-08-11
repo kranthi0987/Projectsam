@@ -114,15 +114,15 @@ public class BlankFragment extends Fragment {
                 s = Listdata.getTitle();
 
                 list = Listdata.getRows();
-                for (int i = 0; i < list.size(); i++) {
-                    productModel = list.get(i);
-                    System.out.println(productModel.getImageHref());
-                    System.out.println(productModel.getTitle());
-                    System.out.println(productModel.getDescription());
-                    String title = productModel.getTitle();
-                    String description = productModel.getDescription();
-                    Object image = productModel.getImageHref();
-                }
+//                for (int i = 0; i < list.size(); i++) {
+//                    productModel = list.get(i);
+//                    System.out.println(productModel.getImageHref());
+//                    System.out.println(productModel.getTitle());
+//                    System.out.println(productModel.getDescription());
+//                    String title = productModel.getTitle();
+//                    String description = productModel.getDescription();
+//                    Object image = productModel.getImageHref();
+//                }
                 recyclerAdapter.setlist(list);
 //                mAdapter = new RecyclerAdapter(list, getActivity());
 //                listrecyclerview.setAdapter((RecyclerView.Adapter) listqueues);
