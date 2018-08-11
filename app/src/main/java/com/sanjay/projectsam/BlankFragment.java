@@ -2,8 +2,12 @@ package com.sanjay.projectsam;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.sanjay.projectsam.adapter.RecyclerAdapter;
 import com.sanjay.projectsam.model.Projectsammodel;
 import com.sanjay.projectsam.model.Row;
 import com.sanjay.projectsam.retrofit.ApiClient;
@@ -29,13 +32,13 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class BlankFragment extends Fragment {
-
+    public static final String MyPREFERENCES = "MyPrefs";
+    public String s = null;
     public static ApiInterface apiInterface;
-    RecyclerView listrecyclerview;
     List<Row> list;
-    private RecyclerAdapter mAdapter;
     Row productModel = null;
-
+    SharedPreferences sharedpreferences;
+    SwipeRefreshLayout swipeLayout;
     public BlankFragment() {
         // Required empty public constructor
     }
@@ -43,11 +46,21 @@ public class BlankFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         logincall();
 //        return inflater.inflate(R.layout.fragment_blank, container, false);
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
 //
+
+        swipeLayout = rootView.findViewById(R.id.pullToRefresh);
         RecyclerView listrecyclerview = rootView.findViewById(R.id.listrecycle);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                logincall(); // your code
+                swipeLayout.setRefreshing(false);
+            }
+        });
         listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         System.out.println("onCreateView: " + list);
         listrecyclerview.setItemAnimator(new DefaultItemAnimator());
@@ -77,6 +90,7 @@ public class BlankFragment extends Fragment {
             public void onComplete() {
                 progressDoalog.hide();
                 Log.d("", "onNext:");
+//                sendData(s);
                 Toast.makeText(getContext(), "Completed", Toast.LENGTH_SHORT).show();
             }
 
@@ -87,17 +101,11 @@ public class BlankFragment extends Fragment {
 
             @Override
             public void onNext(Projectsammodel Listdata) {
+                Listdata.setTitle(Listdata.getTitle());
+//                sending title to activity
+                s = Listdata.getTitle();
 
-
-                Projectsammodel ListModel = new Projectsammodel();
-                ListModel.setTitle(Listdata.getTitle());
-
-                Log.d("", "onNext:" + Listdata.getTitle());
-                Toast.makeText(getContext(), "kkk" + Listdata.getRows(), Toast.LENGTH_LONG).show();
-
-                System.out.println(Listdata.getRows());
                 list = Listdata.getRows();
-//                listrecyclerview.setAdapter(new RecyclerAdapter(list));
                 for (int i = 0; i < list.size(); i++) {
                     productModel = list.get(i);
                     System.out.println(productModel.getImageHref());
@@ -106,13 +114,10 @@ public class BlankFragment extends Fragment {
                     String title = productModel.getTitle();
                     String description = productModel.getDescription();
                     Object image = productModel.getImageHref();
-                    productModel.setTitle(title);
-                    productModel.setDescription(description);
-                    productModel.setImageHref(image);
-                    list.add(productModel);
+
                 }
 //                mAdapter = new RecyclerAdapter(list, getActivity());
-                listrecyclerview.setAdapter((RecyclerView.Adapter) list);
+//                listrecyclerview.setAdapter((RecyclerView.Adapter) listqueues);
 //                listrecyclerview.setAdapter(new RecyclerAdapter(list));
 //                RecyclerView listrecyclerview = (RecyclerView) getActivity().findViewById(R.id.listrecycle);
 //                listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -132,6 +137,7 @@ public class BlankFragment extends Fragment {
 //                recyclerView.setAdapter(recyclerAdapter);
 
             }
+
         });
 //        projectcall.enqueue(new Callback<Projectsammodel>() {
 //            @Override
@@ -153,5 +159,13 @@ public class BlankFragment extends Fragment {
 //        });
     }
 
+    private void sendData(String title) {
+        //INTENT OBJ
+        Intent i = new Intent(getContext(), MainActivity.class);
+        //PACK DATA
+        i.putExtra("SENDER_KEY", title);
+        //START ACTIVITY
+        getActivity().startActivity(i);
+    }
 
 }
