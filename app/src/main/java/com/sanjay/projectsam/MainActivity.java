@@ -24,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String title = sharedpreferences.getString("title", "");
 //        String sender=this.getIntent().getExtras().getString("SENDER_KEY");
-        receiveData();
+//        receiveData();
 
         //Fragments initialization
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 //        Intent i = getIntent();
 //        String name = i.getStringExtra("SENDER_KEY");
-//        setTitle(name);
+        setTitle(title);
     }
 
 }

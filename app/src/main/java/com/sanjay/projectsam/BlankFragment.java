@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.sanjay.projectsam.adapter.RecyclerAdapter;
 import com.sanjay.projectsam.model.Projectsammodel;
 import com.sanjay.projectsam.model.Row;
 import com.sanjay.projectsam.retrofit.ApiClient;
 import com.sanjay.projectsam.retrofit.ApiInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -39,6 +41,9 @@ public class BlankFragment extends Fragment {
     Row productModel = null;
     SharedPreferences sharedpreferences;
     SwipeRefreshLayout swipeLayout;
+    RecyclerAdapter recyclerAdapter;
+
+
     public BlankFragment() {
         // Required empty public constructor
     }
@@ -58,13 +63,15 @@ public class BlankFragment extends Fragment {
             @Override
             public void onRefresh() {
                 logincall(); // your code
-                swipeLayout.setRefreshing(false);
+                swipeLayout.setRefreshing(true);
             }
         });
         listrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list = new ArrayList<>();
         System.out.println("onCreateView: " + list);
         listrecyclerview.setItemAnimator(new DefaultItemAnimator());
-//        listrecyclerview.setAdapter((RecyclerView.Adapter) list);
+        recyclerAdapter = new RecyclerAdapter(getContext(), list);
+        listrecyclerview.setAdapter(recyclerAdapter);
         return rootView;
 
     }
@@ -91,6 +98,7 @@ public class BlankFragment extends Fragment {
                 progressDoalog.hide();
                 Log.d("", "onNext:");
 //                sendData(s);
+                sharedpreferences.edit().putString("title", s).apply();
                 Toast.makeText(getContext(), "Completed", Toast.LENGTH_SHORT).show();
             }
 
@@ -114,8 +122,8 @@ public class BlankFragment extends Fragment {
                     String title = productModel.getTitle();
                     String description = productModel.getDescription();
                     Object image = productModel.getImageHref();
-
                 }
+                recyclerAdapter.setlist(list);
 //                mAdapter = new RecyclerAdapter(list, getActivity());
 //                listrecyclerview.setAdapter((RecyclerView.Adapter) listqueues);
 //                listrecyclerview.setAdapter(new RecyclerAdapter(list));

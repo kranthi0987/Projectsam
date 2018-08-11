@@ -2,7 +2,6 @@ package com.sanjay.projectsam.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +16,20 @@ import com.sanjay.projectsam.model.Row;
 
 import java.util.List;
 
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyviewHolder> {
 
     Context context;
     private List<Row> listrow;
 
+    public RecyclerAdapter(Context listrow, List<Row> list) {
+        this.listrow = list;
 
-    public RecyclerAdapter(List<Row> listrow, FragmentActivity activity) {
-        this.listrow = listrow;
+    }
+
+    public void setlist(List<Row> list) {
+        this.listrow = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -40,7 +45,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
         Row product = listrow.get(position);
         holder.title.setText(product.getTitle());
         holder.description.setText(product.getDescription());
-        Glide.with(context).load(product.getImageHref()).apply(RequestOptions.centerCropTransform()).into(holder.icon);
+        Glide.with(getActivity()).load(product.getImageHref()).apply(RequestOptions.centerCropTransform()).into(holder.icon);
     }
 
 
@@ -49,6 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
         System.out.println("itemcount" + listrow.size());
         return listrow.size();
     }
+
 
     public static class MyviewHolder extends RecyclerView.ViewHolder {
         ImageView icon;
